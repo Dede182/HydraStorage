@@ -2,9 +2,9 @@
 
 namespace HydraStorage\HydraStorage;
 
+use HydraStorage\HydraStorage\Commands\HydraStorageCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use HydraStorage\HydraStorage\Commands\HydraStorageCommand;
 
 class HydraStorageServiceProvider extends PackageServiceProvider
 {

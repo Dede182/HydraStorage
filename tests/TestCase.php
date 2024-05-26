@@ -2,9 +2,9 @@
 
 namespace HydraStorage\HydraStorage\Tests;
 
+use HydraStorage\HydraStorage\HydraStorageServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use HydraStorage\HydraStorage\HydraStorageServiceProvider;
 
 class TestCase extends Orchestra
 {
