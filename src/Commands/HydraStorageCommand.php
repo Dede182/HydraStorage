@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace HydraStorage\HydraStorage\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class HydraStorageCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'hydrastorage';
 
     public $description = 'My command';
 
