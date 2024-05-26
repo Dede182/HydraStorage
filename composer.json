@@ -76,7 +76,5 @@
                 "HydraStorage": "HydraStorage\\HydraStorage\\Facades\\HydraStorage"
             }
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
