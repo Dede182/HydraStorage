@@ -1,12 +1,12 @@
 {
-    "name": "htet-shine/hydrastorage",
+    "name": "Dede/hydrastorage",
     "description": "to use store image faster with prefer compressiono and file upload ",
     "keywords": [
         "HydraStorage",
         "laravel",
         "hydrastorage"
     ],
-    "homepage": "https://github.com/htet-shine/hydrastorage",
+    "homepage": "https://github.com/Dede182/HydraStorage",
     "license": "MIT",
     "authors": [
         {
