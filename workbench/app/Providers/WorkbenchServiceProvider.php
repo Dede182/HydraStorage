@@ -2,6 +2,8 @@
 
 namespace Workbench\App\Providers;
 
+use HydraStorage\HydraStorage\Service\TestController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +22,9 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::view('/', 'welcome');
+        Route::post('/submit', function (Request $request) {
+            return (new TestController())->store($request);
+        });
+
     }
 }

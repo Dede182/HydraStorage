@@ -69,7 +69,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "HydraStorage\\HydraStorage\\HydraStorageServiceProvider"
+                "HydraStorage\\HydraStorage\\HydraStorageServiceProvider",
+                "Workbench\\App\\Providers\\WorkbenchServiceProvider"
             ],
             "aliases": {
                 "HydraStorage": "HydraStorage\\HydraStorage\\Facades\\HydraStorage"
