@@ -15,9 +15,7 @@ class MediaOption
 
     public ?int $height;
 
-
-
-    public function __construct(string $size = null, int $quality = 100, int $width = null, int $height = null)
+    public function __construct(?string $size = null, int $quality = 100, ?int $width = null, ?int $height = null)
     {
         $this->size = $size;
         $this->quality = $quality;
@@ -34,5 +32,4 @@ class MediaOption
             'height' => $this->height,
         ];
     }
-
 }

@@ -8,8 +8,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class HydraStorageServiceProvider extends PackageServiceProvider
 {
-
-
     public function configurePackage(Package $package): void
     {
         /*
@@ -26,7 +24,7 @@ class HydraStorageServiceProvider extends PackageServiceProvider
 
         // want to set default media option
         $this->app->singleton('mediaOption', function ($app) {
-            return new \HydraStorage\HydraStorage\Service\Option\MediaOption("medium", 100, 800, 600);
+            return new \HydraStorage\HydraStorage\Service\Option\MediaOption('medium', 100, 800, 600);
         });
     }
 }
