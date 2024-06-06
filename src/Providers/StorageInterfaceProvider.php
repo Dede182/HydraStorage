@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class StorageInterfaceProvider implements ServiceProvider
 {
-    public function register() : void
+    public function register(): void
     {
         $this->app->bind(HydraMediaInteface::class, HydraStore::class);
     }
@@ -21,9 +21,7 @@ class StorageInterfaceProvider implements ServiceProvider
     public function provides()
     {
         return [
-            HydraMediaInteface::class
+            HydraMediaInteface::class,
         ];
     }
-
-
 }

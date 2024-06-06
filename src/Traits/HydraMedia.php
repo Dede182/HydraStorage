@@ -1,6 +1,7 @@
 <?php
 
 namespace HydraStorage\HydraStorage\Traits;
+
 use HydraStorage\HydraStorage\Contracts\HydraMediaInteface;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
 

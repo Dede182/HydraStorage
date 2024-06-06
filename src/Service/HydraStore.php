@@ -5,7 +5,7 @@ namespace HydraStorage\HydraStorage\Service;
 use HydraStorage\HydraStorage\Contracts\HydraMediaInteface;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
+
 class HydraStore implements HydraMediaInteface
 {
     protected $mediaOption;
@@ -17,13 +17,14 @@ class HydraStore implements HydraMediaInteface
         $this->mediaOption = $mediaOption ?? app('mediaOption');
     }
 
-    public function setOption(MediaOption $mediaOption) : self
+    public function setOption(MediaOption $mediaOption): self
     {
         $this->mediaOption = $mediaOption;
+
         return $this;
     }
 
-    public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false) : string | array
+    public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false): string|array
     {
         $mediaCollection = $file;
         $this->createStorageFolder($folderPath);
@@ -60,7 +61,7 @@ class HydraStore implements HydraMediaInteface
         return ImageManipulation::manipulate($file, $this->mediaOption);
     }
 
-    protected function store(string $path, mixed $file, string $file_name, bool $copressed = false) : string
+    protected function store(string $path, mixed $file, string $file_name, bool $copressed = false): string
     {
         $disk = config('hydrastorage.provider');
 
@@ -73,7 +74,7 @@ class HydraStore implements HydraMediaInteface
         return $file_name;
     }
 
-    protected function createStorageFolder(string $folderPath) :void
+    protected function createStorageFolder(string $folderPath): void
     {
         if (! Storage::exists($this->mainPath.$folderPath)) {
             Storage::makeDirectory($this->mainPath.$folderPath, 0755, true);

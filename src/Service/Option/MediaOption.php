@@ -19,7 +19,7 @@ class MediaOption
 
     public ?string $extension = null;
 
-    public function __construct(?string $size = null,?int $quality = 100, ?int $width = null, ?int $height = null, ?string $extension = null)
+    public function __construct(?string $size = null, ?int $quality = 100, ?int $width = null, ?int $height = null, ?string $extension = null)
     {
         $this->size = $size;
 
