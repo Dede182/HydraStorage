@@ -11,41 +11,54 @@ class HydraStore
 
     protected $mainPath = 'public/';
 
-    public function __construct(?MediaOption $mediaOption = null)
+    public function __construct(MediaOption $mediaOption)
     {
-        $this->mediaOption = $mediaOption ?? app('mediaOption');
+        $this->mediaOption = $mediaOption ;
     }
 
     public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false)
     {
         $mediaCollection = $compression ? $this->manipulate($file) : $file;
+
+
         $this->createStorageFolder($folderPath);
 
         $output = [];
 
         if (is_array($mediaCollection)) {
             foreach ($mediaCollection as $media) {
-                $output[] = $this->store($folderPath, $media);
+                $extension = ExtensionCracker::getExtension($media);
+
+                $file_name = FileNamGenerator::generate($media, $extension);
+
+                $output[] =   $this->store($folderPath, $media,$file_name,$compression);
             }
         } else {
-            return $this->store($folderPath, $mediaCollection);
+            $extension = ExtensionCracker::getExtension($mediaCollection);
 
+            $file_name = FileNamGenerator::generate($mediaCollection, $extension);
+            return $this->store($folderPath, $mediaCollection,$file_name,$compression);
         }
 
         return $output;
     }
 
-    protected function manipulate(string|array $file): string|array
+    protected function manipulate(mixed $file)
     {
-        return ImageManipulation::manipulate($file);
+        return ImageManipulation::manipulate($file,$this->mediaOption);
     }
 
-    protected function store($path, $file)
+
+    protected function store(string $path, mixed $file ,string $file_name,bool $copressed = false)
     {
         $disk = config('hydrastorage.provider');
-        $file_name = time().str_replace(' ', '_', $file->getClientOriginalName());
 
-        Storage::disk($disk)->put($this->mainPath.$path.'/'.$file_name, file_get_contents($file));
+        if(!$copressed)
+        {
+            $file = file_get_contents($file);
+        }
+
+        Storage::disk($disk)->put($this->mainPath.$path.'/'.$file_name, $file);
 
         return $file_name;
     }
