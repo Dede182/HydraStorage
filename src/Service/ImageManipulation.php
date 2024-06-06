@@ -2,22 +2,22 @@
 
 namespace HydraStorage\HydraStorage\Service;
 
-
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
-
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class ImageManipulation
 {
-   public static $mediaOption;
+    public static $mediaOption;
 
-   public function __construct(){
-   }
+    public function __construct()
+    {
+    }
 
-    public static function manipulate(mixed $file,MediaOption $mediaOption)
+    public static function manipulate(mixed $file, MediaOption $mediaOption)
     {
         self::$mediaOption = $mediaOption;
+
         return static::process($file);
     }
 
@@ -28,6 +28,7 @@ class ImageManipulation
             foreach ($file as $media) {
                 $output[] = static::process($media);
             }
+
             return $output;
         }
 
@@ -56,6 +57,7 @@ class ImageManipulation
     protected static function resizeAndEncode($image, $extension)
     {
         $image = static::resize($image);
+
         return $image->encodeByExtension($extension, self::$mediaOption->quality);
     }
 }

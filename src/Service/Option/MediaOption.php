@@ -7,7 +7,6 @@ namespace HydraStorage\HydraStorage\Service\Option;
  */
 class MediaOption
 {
-
     use MediaDimension;
 
     public ?string $size;
@@ -24,10 +23,9 @@ class MediaOption
     {
         $this->size = $size;
 
-
         $this->quality = $quality;
         $this->width = $width;
-        $this->height =  $height;
+        $this->height = $height;
         $this->extension = $extension;
     }
 
@@ -35,5 +33,4 @@ class MediaOption
     {
         return $this;
     }
-
 }

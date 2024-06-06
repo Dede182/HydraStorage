@@ -16,11 +16,9 @@ class HydraStorageServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
 
-
-        if (!extension_loaded('imagick')) {
+        if (! extension_loaded('imagick')) {
             throw new \Exception('Imagick extension is not loaded');
         }
-
 
         $package
             ->name('hydrastorage')
@@ -33,7 +31,6 @@ class HydraStorageServiceProvider extends PackageServiceProvider
         $this->app->singleton('mediaOption', function ($app) {
             return new \HydraStorage\HydraStorage\Service\Option\MediaOption('medium', 100, 100, 100);
         });
-
 
     }
 }

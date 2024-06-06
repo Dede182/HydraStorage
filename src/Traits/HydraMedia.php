@@ -9,7 +9,7 @@ trait HydraMedia
 {
     protected $defaultDisk = '';
 
-    public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false,MediaOption $mediaOption = null)
+    public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false, ?MediaOption $mediaOption = null)
     {
         $mediaOption = $mediaOption ?? app('mediaOption');
         $mediaStore = (new HydraStore($mediaOption))->storeMedia($file, $folderPath, $compression);

@@ -4,7 +4,5 @@ namespace HydraStorage\HydraStorage\Contracts;
 
 interface ExtensionCrackInterface
 {
-
-    public static function getExtension(mixed $file) : string;
-
+    public static function getExtension(mixed $file): string;
 }

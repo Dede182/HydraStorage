@@ -13,13 +13,12 @@ class HydraStore
 
     public function __construct(MediaOption $mediaOption)
     {
-        $this->mediaOption = $mediaOption ;
+        $this->mediaOption = $mediaOption;
     }
 
     public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false)
     {
         $mediaCollection = $compression ? $this->manipulate($file) : $file;
-
 
         $this->createStorageFolder($folderPath);
 
@@ -31,13 +30,14 @@ class HydraStore
 
                 $file_name = FileNamGenerator::generate($media, $extension);
 
-                $output[] =   $this->store($folderPath, $media,$file_name,$compression);
+                $output[] = $this->store($folderPath, $media, $file_name, $compression);
             }
         } else {
             $extension = ExtensionCracker::getExtension($mediaCollection);
 
             $file_name = FileNamGenerator::generate($mediaCollection, $extension);
-            return $this->store($folderPath, $mediaCollection,$file_name,$compression);
+
+            return $this->store($folderPath, $mediaCollection, $file_name, $compression);
         }
 
         return $output;
@@ -45,16 +45,14 @@ class HydraStore
 
     protected function manipulate(mixed $file)
     {
-        return ImageManipulation::manipulate($file,$this->mediaOption);
+        return ImageManipulation::manipulate($file, $this->mediaOption);
     }
 
-
-    protected function store(string $path, mixed $file ,string $file_name,bool $copressed = false)
+    protected function store(string $path, mixed $file, string $file_name, bool $copressed = false)
     {
         $disk = config('hydrastorage.provider');
 
-        if(!$copressed)
-        {
+        if (! $copressed) {
             $file = file_get_contents($file);
         }
 
