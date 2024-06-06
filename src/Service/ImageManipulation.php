@@ -2,8 +2,9 @@
 
 namespace HydraStorage\HydraStorage\Service;
 
+use HydraStorage\HydraStorage\Expections\InvalidInputMediaFormat;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
-use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 
 class ImageManipulation
@@ -18,7 +19,14 @@ class ImageManipulation
     {
         self::$mediaOption = $mediaOption;
 
-        return static::process($file);
+        (new self())->checkExtension($file);
+
+        try {
+            return static::process($file);
+        } catch (\Exception $e) {
+            return $file;
+        }
+
     }
 
     protected static function process(mixed $file)
@@ -59,5 +67,20 @@ class ImageManipulation
         $image = static::resize($image);
 
         return $image->encodeByExtension($extension, self::$mediaOption->quality);
+    }
+
+    protected function checkExtension($file)
+    {
+        $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+
+        $extension = $file->getClientMimeType();
+
+        $name = $file->getClientOriginalName();
+
+        $message = "$name is  $extension of mimeType, only jpeg, png, jpg, gif are allowed.";
+
+        if (! in_array($extension, $accept)) {
+            throw new InvalidInputMediaFormat($message);
+        }
     }
 }

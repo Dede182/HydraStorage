@@ -2,40 +2,52 @@
 
 namespace HydraStorage\HydraStorage\Service;
 
+use HydraStorage\HydraStorage\Contracts\HydraMediaInteface;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
 use Illuminate\Support\Facades\Storage;
-
-class HydraStore
+use Illuminate\Support\Facades\Log;
+class HydraStore implements HydraMediaInteface
 {
     protected $mediaOption;
 
     protected $mainPath = 'public/';
 
-    public function __construct(MediaOption $mediaOption)
+    public function __construct(?MediaOption $mediaOption)
     {
-        $this->mediaOption = $mediaOption;
+        $this->mediaOption = $mediaOption ?? app('mediaOption');
     }
 
-    public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false)
+    public function setOption(MediaOption $mediaOption) : self
     {
-        $mediaCollection = $compression ? $this->manipulate($file) : $file;
+        $this->mediaOption = $mediaOption;
+        return $this;
+    }
 
+    public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false) : string | array
+    {
+        $mediaCollection = $file;
         $this->createStorageFolder($folderPath);
 
         $output = [];
 
         if (is_array($mediaCollection)) {
             foreach ($mediaCollection as $media) {
-                $extension = ExtensionCracker::getExtension($media);
+
+                $sub_media = $compression ? $this->manipulate($media) : $media;
+
+                $extension = ExtensionCracker::getExtension($sub_media);
 
                 $file_name = FileNamGenerator::generate($media, $extension);
 
-                $output[] = $this->store($folderPath, $media, $file_name, $compression);
+                $output[] = $this->store($folderPath, $sub_media, $file_name, $compression);
             }
         } else {
+
+            $mediaCollection = $compression ? $this->manipulate($mediaCollection) : $mediaCollection;
+
             $extension = ExtensionCracker::getExtension($mediaCollection);
 
-            $file_name = FileNamGenerator::generate($mediaCollection, $extension);
+            $file_name = FileNamGenerator::generate($file, $extension);
 
             return $this->store($folderPath, $mediaCollection, $file_name, $compression);
         }
@@ -48,7 +60,7 @@ class HydraStore
         return ImageManipulation::manipulate($file, $this->mediaOption);
     }
 
-    protected function store(string $path, mixed $file, string $file_name, bool $copressed = false)
+    protected function store(string $path, mixed $file, string $file_name, bool $copressed = false) : string
     {
         $disk = config('hydrastorage.provider');
 
@@ -61,7 +73,7 @@ class HydraStore
         return $file_name;
     }
 
-    protected function createStorageFolder(string $folderPath)
+    protected function createStorageFolder(string $folderPath) :void
     {
         if (! Storage::exists($this->mainPath.$folderPath)) {
             Storage::makeDirectory($this->mainPath.$folderPath, 0755, true);
