@@ -9,6 +9,11 @@ trait MediaDimension
         return new self('original', 100, null, null, null);
     }
 
+    public function setPreview(): self
+    {
+        return new self('preview', 60, 80, 80, 'jpg');
+    }
+
     public function setThumbnail(): self
     {
         return new self('thumbnail', 80, 150, 150, 'jpg');
@@ -34,7 +39,17 @@ trait MediaDimension
         return new self('extra-large', 100, 1600, 1600, 'jpg');
     }
 
-    public function setCustom(int $quality, int $width, int $height, string $extension): self
+    public function setBanner(): self
+    {
+        return new self('banner', 100, 1920, 1080, 'jpg');
+    }
+
+    public function setLogo(int $width = 200,int $height = 200): self
+    {
+        return new self('logo', 100, $width, $height, 'png');
+    }
+
+    public function setCustom(int $quality, ?int $width = null, ?int $height = null, string $extension): self
     {
         return new self('custom', $quality, $width, $height, $extension);
     }
