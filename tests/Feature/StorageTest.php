@@ -12,7 +12,7 @@ uses(HydraMedia::class);
 it('can save with original format with single file', function () {
     $fakeFile = UploadedFile::fake()->image('test.jpg');
 
-    $option = (new MediaOption());
+    $option = (new MediaOption);
 
     $media = $this->storeMedia($fakeFile, 'sub_storage_1', true, $option);
 
@@ -33,7 +33,7 @@ test('can save multi file with original format', function () {
         UploadedFile::fake()->image('test3.jpg'),
     ];
 
-    $option = (new MediaOption());
+    $option = (new MediaOption);
 
     $media = $this->storeMedia($fakeFiles, 'sub_storage_2', true, $option);
 

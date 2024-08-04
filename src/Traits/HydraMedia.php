@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 trait HydraMedia
 {
-
     public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false, ?MediaOption $mediaOption = null)
     {
         $mediaOption = $mediaOption ?? app('mediaOption');

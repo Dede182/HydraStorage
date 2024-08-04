@@ -11,15 +11,13 @@ class ImageManipulation
 {
     public static $mediaOption;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public static function manipulate(mixed $file, MediaOption $mediaOption)
     {
         self::$mediaOption = $mediaOption;
 
-        (new self())->checkExtension($file);
+        (new self)->checkExtension($file);
 
         try {
             return static::process($file);

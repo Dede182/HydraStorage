@@ -44,12 +44,12 @@ trait MediaDimension
         return new self('banner', 100, 1920, 1080, 'jpg');
     }
 
-    public function setLogo(int $width = 200,int $height = 200): self
+    public function setLogo(int $width = 200, int $height = 200): self
     {
         return new self('logo', 100, $width, $height, 'png');
     }
 
-    public function setCustom(int $quality, ?int $width = null, ?int $height = null, string $extension): self
+    public function setCustom(int $quality, ?int $width, ?int $height, string $extension): self
     {
         return new self('custom', $quality, $width, $height, $extension);
     }

@@ -2,6 +2,4 @@
 
 namespace HydraStorage\HydraStorage;
 
-class HydraStorage
-{
-}
+class HydraStorage {}
