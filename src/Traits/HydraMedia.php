@@ -25,4 +25,22 @@ trait HydraMedia
 
         return true;
     }
+
+    public function getMedia(string $path, string $prefix="")
+    {
+        $disk = config('hydrastorage.provider');
+
+        if($disk === 'local'){
+            return asset('storage/'.$path);
+        }
+
+        // check if the path is already a full url
+        if (filter_var($path, FILTER_VALIDATE_URL)) {
+            return $path;
+        }
+
+        return Storage::disk($disk)->url($prefix.$path);
+
+    }
+
 }
