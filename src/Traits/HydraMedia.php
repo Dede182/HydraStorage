@@ -26,11 +26,11 @@ trait HydraMedia
         return true;
     }
 
-    public function getMedia(string $path, string $prefix="")
+    public function getMedia(string $path, string $prefix = '')
     {
         $disk = config('hydrastorage.provider');
 
-        if($disk === 'local'){
+        if ($disk === 'local') {
             return asset('storage/'.$path);
         }
 
@@ -42,5 +42,4 @@ trait HydraMedia
         return Storage::disk($disk)->url($prefix.$path);
 
     }
-
 }
