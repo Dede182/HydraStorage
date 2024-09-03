@@ -2,13 +2,13 @@
 
 namespace HydraStorage\HydraStorage\Service\Snap;
 
-use Intervention\Image\Drivers\Imagick\Driver;
-use Intervention\Image\Image;
-use Intervention\Image\ImageManager;
 use HydraStorage\HydraStorage\Service\Snap\Strategies\CompressStrategy;
 use HydraStorage\HydraStorage\Service\Snap\Strategies\GrayscaleStrategy;
 use HydraStorage\HydraStorage\Service\Snap\Strategies\ResizeStrategy;
 use HydraStorage\HydraStorage\Service\Snap\Strategies\WatermarkStrategy;
+use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 class ImageSnap
 {
@@ -45,6 +45,7 @@ class ImageSnap
         }
 
         $manager = new ImageManager(Driver::class); // or 'gd'
+
         return $manager->read($image);
     }
 }

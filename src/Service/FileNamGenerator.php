@@ -7,7 +7,7 @@ use HydraStorage\HydraStorage\Service\Option\MediaOption;
 
 class FileNamGenerator implements FileNameGeneratorInterface
 {
-    public static function generate(mixed $file, string $extension,MediaOption $mediaOption) : mixed
+    public static function generate(mixed $file, string $extension, MediaOption $mediaOption): mixed
     {
 
         $get_name = $file->getClientOriginalName();
@@ -26,10 +26,10 @@ class FileNamGenerator implements FileNameGeneratorInterface
 
         if (count($prefix) > 0) {
             foreach ($prefix as $value) {
-                $file_name = $value['value'] . '_' . $file_name;
+                $file_name = $value['value'].'_'.$file_name;
             }
         }
 
-        return $file_name .'.'. $extension;
+        return $file_name.'.'.$extension;
     }
 }

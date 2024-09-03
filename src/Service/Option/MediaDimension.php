@@ -4,7 +4,6 @@ namespace HydraStorage\HydraStorage\Service\Option;
 
 trait MediaDimension
 {
-
     public static function setOriginal(): self
     {
         return new self('original', 100, null, null, null);

@@ -34,9 +34,9 @@ class ImageManipulation
             foreach ($file as $media) {
                 $output[] = static::process($media);
             }
+
             return $output;
         }
-
 
         $manager = new ImageManager(Driver::class);
         $image = $manager->read($file);
@@ -44,8 +44,7 @@ class ImageManipulation
         return ImageSnap::snap($image, self::$mediaOption->type);
     }
 
-
-    protected function checkExtension($file) : void
+    protected function checkExtension($file): void
     {
         $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
 

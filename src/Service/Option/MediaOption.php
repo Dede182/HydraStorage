@@ -9,14 +9,11 @@ class MediaOption
 {
     public array $type = [];
 
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public static function create()
     {
-        return new self();
+        return new self;
     }
 
     public function get()
@@ -28,7 +25,7 @@ class MediaOption
     {
         $this->type[] = [
             'type' => 'extension',
-            'value' => $extension
+            'value' => $extension,
         ];
 
         return $this;
@@ -38,7 +35,7 @@ class MediaOption
     {
         $this->type[] = [
             'type' => 'compress',
-            'value' => $quality
+            'value' => $quality,
         ];
 
         return $this;
@@ -48,7 +45,7 @@ class MediaOption
     {
         $this->type[] = [
             'type' => 'grayscale',
-            'value' => true
+            'value' => true,
         ];
 
         return $this;
@@ -62,8 +59,8 @@ class MediaOption
             'value' => [
                 'image' => $image,
                 'position' => $position ?? 'center',
-                'opacity' => $opacity ?? 100
-            ]
+                'opacity' => $opacity ?? 100,
+            ],
         ];
 
         return $this;
@@ -73,7 +70,7 @@ class MediaOption
     {
         $this->type[] = [
             'type' => 'prefix',
-            'value' => $prefix
+            'value' => $prefix,
         ];
 
         return $this;
@@ -95,8 +92,8 @@ class MediaOption
             'type' => 'resize',
             'value' => [
                 'width' => $width,
-                'height' => $height
-            ]
+                'height' => $height,
+            ],
         ];
 
         return $this;

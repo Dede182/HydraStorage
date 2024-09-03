@@ -3,7 +3,6 @@
 namespace HydraStorage\HydraStorage\Service\Snap\Strategies;
 
 use HydraStorage\HydraStorage\Contracts\ImageOperationStrategy;
-
 use Intervention\Image\Image;
 
 class ResizeStrategy implements ImageOperationStrategy
