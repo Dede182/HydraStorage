@@ -23,6 +23,7 @@ class ImageSnap
     {
         $image = self::convertImageInstance($image);
 
+
         foreach ($mediaOptions as $option) {
             $type = $option['type'];
             $value = $option['value'];
@@ -34,7 +35,6 @@ class ImageSnap
                 throw new \InvalidArgumentException("Unsupported media option: $type");
             }
         }
-
         return $image;
     }
 

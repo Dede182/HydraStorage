@@ -78,8 +78,6 @@ class MediaOption
 
     public function resize(?string $recommand, ?int $width = 350, ?int $height = 350)
     {
-
-        // if recommand is not null, set width and height to null
         match ($recommand) {
             'thumbnail' => [$width, $height] = [150, 150],
             'small' => [$width, $height] = [300, 300],

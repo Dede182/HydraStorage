@@ -2,7 +2,7 @@
 
 namespace HydraStorage\HydraStorage\Providers;
 
-use HydraStorage\HydraStorage\Contracts\HydraMediaInteface;
+use HydraStorage\HydraStorage\Contracts\HydraMediaInterface;
 use HydraStorage\HydraStorage\Service\HydraStore;
 use Illuminate\Support\ServiceProvider;
 
@@ -10,7 +10,7 @@ class StorageInterfaceProvider implements ServiceProvider
 {
     public function register(): void
     {
-        $this->app->bind(HydraMediaInteface::class, HydraStore::class);
+        $this->app->bind(HydraMediaInterface::class, HydraStore::class);
     }
 
     public function boot()
@@ -21,7 +21,7 @@ class StorageInterfaceProvider implements ServiceProvider
     public function provides()
     {
         return [
-            HydraMediaInteface::class,
+            HydraMediaInterface::class,
         ];
     }
 }

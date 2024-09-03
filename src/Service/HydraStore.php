@@ -2,81 +2,76 @@
 
 namespace HydraStorage\HydraStorage\Service;
 
-use HydraStorage\HydraStorage\Contracts\HydraMediaInteface;
+use HydraStorage\HydraStorage\Contracts\HydraMediaInterface;
+use HydraStorage\HydraStorage\Contracts\StorageStrategy;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
+use HydraStorage\HydraStorage\Service\StorageStrategy\CompressedStorageStrategy;
+use HydraStorage\HydraStorage\Service\StorageStrategy\RegularStorageStrategy;
 use Illuminate\Support\Facades\Storage;
 
-class HydraStore implements HydraMediaInteface
+class HydraStore implements HydraMediaInterface
 {
-    protected $mediaOption;
+    protected MediaOption $mediaOption;
+    protected string $mainPath = 'public/';
+    protected StorageStrategy $storageStrategy;
 
-    protected $mainPath = 'public/';
-
-    public function __construct(?MediaOption $mediaOption)
+    public function __construct(?MediaOption $mediaOption = null)
     {
-        $this->mediaOption = $mediaOption ?? app('mediaOption');
+        $this->mediaOption = $mediaOption ?? resolve(MediaOption::class);
+    }
+
+    public function setProvider(?string $provider): self
+    {
+        config(['hydrastorage.provider' => $provider ?? config('hydrastorage.provider')]);
+        return $this;
     }
 
     public function setOption(MediaOption $mediaOption): self
     {
         $this->mediaOption = $mediaOption;
-
         return $this;
     }
 
     public function storeMedia(mixed $file, string $folderPath = 'media', bool $compression = false): string|array
     {
-        $mediaCollection = $file;
+        $this->storageStrategy = $this->getStorageStrategy($compression);
+
         $this->createStorageFolder($folderPath);
 
-        $output = [];
-
-        if (is_array($mediaCollection)) {
-            foreach ($mediaCollection as $media) {
-
-                $sub_media = $compression ? $this->manipulate($media) : $media;
-
-                $extension = ExtensionCracker::getExtension($sub_media);
-                $file_name = FileNamGenerator::generate($media, $extension, $this->mediaOption);
-
-                $output[] = $this->store($folderPath, $sub_media, $file_name, $compression);
-            }
-        } else {
-
-            $mediaCollection = $compression ? $this->manipulate($mediaCollection) : $mediaCollection;
-
-            $extension = ExtensionCracker::getExtension($mediaCollection);
-
-            $file_name = FileNamGenerator::generate($file, $extension, $this->mediaOption);
-
-            return $this->store($folderPath, $mediaCollection, $file_name, $compression);
+        if (is_array($file)) {
+            return $this->processBatch($file, $folderPath);
         }
 
-        return $output;
+        return $this->storeSingleMedia($file, $folderPath);
     }
 
-    protected function manipulate(mixed $file)
+    protected function processBatch(array $files, string $folderPath): array
     {
-        return ImageManipulation::manipulate($file, $this->mediaOption);
+        return array_map(fn($media) => $this->storeSingleMedia($media, $folderPath), $files);
     }
 
-    protected function store(string $path, mixed $file, string $file_name, bool $copressed = false): string
+    protected function storeSingleMedia(mixed $file, string $folderPath): string
     {
-        $disk = config('hydrastorage.provider');
+        $extension = ExtensionCracker::getExtension($file);
+        $fileName = FileNamGenerator::generate($file, $extension, $this->mediaOption);
 
-        if (! $copressed) {
-            $file = file_get_contents($file);
-        }
-
-        Storage::disk($disk)->put($this->mainPath.$path.'/'.$file_name, $file);
-
-        return $file_name;
+        return $this->storageStrategy->store($file, $this->mainPath . $folderPath, $fileName);
     }
 
     protected function createStorageFolder(string $folderPath): void
     {
-        if (! Storage::exists($this->mainPath.$folderPath)) {
-            Storage::makeDirectory($this->mainPath.$folderPath, 0755, true);
+        $storagePath = $this->mainPath . $folderPath;
+        if (!Storage::exists($storagePath)) {
+            Storage::makeDirectory($storagePath, 0755, true);
         }
+    }
+
+    protected function getStorageStrategy(bool $compression): StorageStrategy
+    {
+        if ($compression) {
+            return new CompressedStorageStrategy(clone $this->mediaOption); // Clone for immutability
+        }
+
+        return new RegularStorageStrategy();
     }
 }

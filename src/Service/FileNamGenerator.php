@@ -9,7 +9,6 @@ class FileNamGenerator implements FileNameGeneratorInterface
 {
     public static function generate(mixed $file, string $extension, MediaOption $mediaOption): mixed
     {
-
         $get_name = $file->getClientOriginalName();
 
         $file_name = str_replace(' ', '_', $get_name);
@@ -32,4 +31,5 @@ class FileNamGenerator implements FileNameGeneratorInterface
 
         return $file_name.'.'.$extension;
     }
+
 }
