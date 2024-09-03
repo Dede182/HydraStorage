@@ -37,8 +37,7 @@ class HydraStore implements HydraMediaInteface
                 $sub_media = $compression ? $this->manipulate($media) : $media;
 
                 $extension = ExtensionCracker::getExtension($sub_media);
-
-                $file_name = FileNamGenerator::generate($media, $extension);
+                $file_name = FileNamGenerator::generate($media, $extension,$this->mediaOption);
 
                 $output[] = $this->store($folderPath, $sub_media, $file_name, $compression);
             }
@@ -48,7 +47,7 @@ class HydraStore implements HydraMediaInteface
 
             $extension = ExtensionCracker::getExtension($mediaCollection);
 
-            $file_name = FileNamGenerator::generate($file, $extension);
+            $file_name = FileNamGenerator::generate($file, $extension,$this->mediaOption);
 
             return $this->store($folderPath, $mediaCollection, $file_name, $compression);
         }

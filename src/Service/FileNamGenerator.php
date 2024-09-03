@@ -3,11 +3,13 @@
 namespace HydraStorage\HydraStorage\Service;
 
 use HydraStorage\HydraStorage\Contracts\FileNameGeneratorInterface;
+use HydraStorage\HydraStorage\Service\Option\MediaOption;
 
 class FileNamGenerator implements FileNameGeneratorInterface
 {
-    public static function generate(mixed $file, string $extension): mixed
+    public static function generate(mixed $file, string $extension,MediaOption $mediaOption) : mixed
     {
+
         $get_name = $file->getClientOriginalName();
 
         $file_name = str_replace(' ', '_', $get_name);
@@ -18,6 +20,16 @@ class FileNamGenerator implements FileNameGeneratorInterface
 
         $file_name = implode('.', $exploded);
 
-        return $file_name.'.'.$extension;
+        $prefix = array_filter($mediaOption->type, function ($value) {
+            return $value['type'] == 'prefix';
+        });
+
+        if (count($prefix) > 0) {
+            foreach ($prefix as $value) {
+                $file_name = $value['value'] . '_' . $file_name;
+            }
+        }
+
+        return $file_name .'.'. $extension;
     }
 }

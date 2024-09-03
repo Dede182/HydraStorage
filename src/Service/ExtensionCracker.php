@@ -8,6 +8,8 @@ class ExtensionCracker implements ExtensionCrackInterface
 {
     public static function getExtension(mixed $file): string
     {
+        // the interfacen of file
+
         if ($file instanceof \Illuminate\Http\UploadedFile) {
             return self::getExtensionFromUploadedFile($file);
         } else {
@@ -30,6 +32,8 @@ class ExtensionCracker implements ExtensionCrackInterface
 
     public static function getExtensionFromPath(mixed $file): string
     {
-        return self::onlyExtension($file->mimeType());
+        // dd($file->exif());
+        // dd(get_class_methods($file));
+        return 'jpg';
     }
 }

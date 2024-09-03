@@ -4,6 +4,7 @@ namespace HydraStorage\HydraStorage\Service;
 
 use HydraStorage\HydraStorage\Expections\InvalidInputMediaFormat;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
+use HydraStorage\HydraStorage\Service\Snap\ImageSnap;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 
@@ -16,7 +17,6 @@ class ImageManipulation
     public static function manipulate(mixed $file, MediaOption $mediaOption)
     {
         self::$mediaOption = $mediaOption;
-
         (new self)->checkExtension($file);
 
         try {
@@ -34,40 +34,18 @@ class ImageManipulation
             foreach ($file as $media) {
                 $output[] = static::process($media);
             }
-
             return $output;
         }
 
-        $image = ImageManager::imagick()->read($file);
 
         $manager = new ImageManager(Driver::class);
         $image = $manager->read($file);
 
-        $extension = static::getExtension($file);
-
-        return static::resizeAndEncode($image, $extension);
+        return ImageSnap::snap($image, self::$mediaOption->type);
     }
 
-    protected static function getExtension($file)
-    {
-        $extension = self::$mediaOption->extension ?? $file->getClientOriginalExtension();
 
-        return $extension;
-    }
-
-    protected static function resize($image)
-    {
-        return $image->resize(self::$mediaOption->width, self::$mediaOption->height);
-    }
-
-    protected static function resizeAndEncode($image, $extension)
-    {
-        $image = static::resize($image);
-
-        return $image->encodeByExtension($extension, self::$mediaOption->quality);
-    }
-
-    protected function checkExtension($file)
+    protected function checkExtension($file) : void
     {
         $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
 
