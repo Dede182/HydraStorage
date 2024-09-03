@@ -40,6 +40,7 @@ class ImageManipulation
 
         $manager = new ImageManager(Driver::class);
         $image = $manager->read($file);
+
         return ImageSnap::snap($image, self::$mediaOption->type);
     }
 

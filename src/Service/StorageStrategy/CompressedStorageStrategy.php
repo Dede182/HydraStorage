@@ -23,7 +23,7 @@ class CompressedStorageStrategy implements StorageStrategy
         $disk = config('hydrastorage.provider');
         $compressedFile = ImageManipulation::manipulate($file, $this->mediaOption);
 
-        Storage::disk($disk)->put($folderPath . '/' . $fileName, $compressedFile);
+        Storage::disk($disk)->put($folderPath.'/'.$fileName, $compressedFile);
 
         return $fileName;
     }
@@ -33,7 +33,7 @@ class CompressedStorageStrategy implements StorageStrategy
         $invalidOptions = ['prefix'];
 
         $mediaOption->type = array_filter($mediaOption->type, function ($option) use ($invalidOptions) {
-            return !in_array($option['type'], $invalidOptions);
+            return ! in_array($option['type'], $invalidOptions);
         });
 
         return $mediaOption;

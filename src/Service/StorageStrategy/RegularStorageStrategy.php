@@ -12,7 +12,7 @@ class RegularStorageStrategy implements StorageStrategy
         $disk = config('hydrastorage.provider');
         $fileContent = is_string($file) ? file_get_contents($file) : $file;
 
-        Storage::disk($disk)->put($folderPath . '/' . $fileName, $fileContent);
+        Storage::disk($disk)->put($folderPath.'/'.$fileName, $fileContent);
 
         return $fileName;
     }

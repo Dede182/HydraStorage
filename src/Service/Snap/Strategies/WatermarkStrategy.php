@@ -9,11 +9,10 @@ class WatermarkStrategy implements ImageOperationStrategy
 {
     public function apply(Image $image, $value): Image
     {
-        try{
-            return $image->place($value['image'], $value['position'],opacity: $value['opacity']);
-        }
-        catch (\Exception $e){
-            throw new \InvalidArgumentException("Watermark image not found");
+        try {
+            return $image->place($value['image'], $value['position'], opacity: $value['opacity']);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('Watermark image not found');
         }
     }
 }

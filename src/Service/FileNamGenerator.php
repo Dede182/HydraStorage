@@ -31,5 +31,4 @@ class FileNamGenerator implements FileNameGeneratorInterface
 
         return $file_name.'.'.$extension;
     }
-
 }
