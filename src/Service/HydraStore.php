@@ -25,7 +25,6 @@ class HydraStore implements HydraMediaInterface
     public function setProvider(?string $provider): self
     {
         config(['hydrastorage.provider' => $provider ?? config('hydrastorage.provider')]);
-
         return $this;
     }
 

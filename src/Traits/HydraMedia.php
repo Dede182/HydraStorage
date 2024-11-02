@@ -18,7 +18,7 @@ trait HydraMedia
         return $mediaStore;
     }
 
-    public function removeMedia(string $path, $diskProvider = null)
+    public function removeMedia(string $path,$diskProvider = null)
     {
 
         $disk = $diskProvider ?? config('hydrastorage.provider');
@@ -28,7 +28,7 @@ trait HydraMedia
         return true;
     }
 
-    public function getMedia(string $path, string $prefix = '', ?string $diskProvider = null): string
+    public function getMedia(string $path, string $folder = '', ?string $diskProvider = null): string
     {
         $disk = $diskProvider ?? config('hydrastorage.provider');
 
@@ -40,6 +40,6 @@ trait HydraMedia
         // Return the correct URL based on the disk
         return $disk === 'local'
             ? asset('storage/'.$path)
-            : Storage::disk($disk)->url($prefix.$path);
+            : Storage::disk($disk)->url($folder.'/'.$path);
     }
 }

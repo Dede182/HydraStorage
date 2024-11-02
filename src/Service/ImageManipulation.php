@@ -46,7 +46,7 @@ class ImageManipulation
 
     protected function checkExtension($file): void
     {
-        $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+        $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif','application/octet-stream'];
 
         $extension = $file->getClientMimeType();
 

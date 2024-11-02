@@ -36,6 +36,8 @@ class CompressedStorageStrategy implements StorageStrategy
             return ! in_array($option['type'], $invalidOptions);
         });
 
+        $mediaOption->orderOperations();
+
         return $mediaOption;
     }
 }

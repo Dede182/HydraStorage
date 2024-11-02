@@ -35,6 +35,10 @@ class ImageSnap
             }
         }
 
+        if (($image instanceof Image)) {
+            return $image->encode();
+        }
+
         return $image;
     }
 

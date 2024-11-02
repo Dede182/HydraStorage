@@ -96,4 +96,15 @@ class MediaOption
 
         return $this;
     }
+
+    public function orderOperations(): array
+    {
+        $lastOperationType = 'compress';
+
+        $lastOperations = array_filter($this->type, fn($option) => $option['type'] === $lastOperationType);
+        $otherOperations = array_filter($this->type, fn($option) => $option['type'] !== $lastOperationType);
+
+        $this->type = array_merge($otherOperations, $lastOperations);
+        return $this->type;
+    }
 }
