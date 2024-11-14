@@ -3,14 +3,15 @@
 namespace HydraStorage\HydraStorage\Service\Snap\Strategies;
 
 use HydraStorage\HydraStorage\Contracts\ImageOperationStrategy;
-use Intervention\Image\Encoders\AutoEncoder;
 use Intervention\Image\Image;
 use Intervention\Image\Interfaces\EncodedImageInterface;
 
 class CompressStrategy implements ImageOperationStrategy
 {
-    public function apply(Image $image, $value): Image|EncodedImageInterface
+    public function apply(Image $image,mixed $value): Image|EncodedImageInterface
     {
-        return $image->encode(new AutoEncoder(quality: $value));
+        $value = $value > 80 ? 80 : $value;
+
+        return $image->encodeByMediaType($image->origin()->mimetype(),quality:$value);
     }
 }

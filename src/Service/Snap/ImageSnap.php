@@ -6,9 +6,7 @@ use HydraStorage\HydraStorage\Service\Snap\Strategies\CompressStrategy;
 use HydraStorage\HydraStorage\Service\Snap\Strategies\GrayscaleStrategy;
 use HydraStorage\HydraStorage\Service\Snap\Strategies\ResizeStrategy;
 use HydraStorage\HydraStorage\Service\Snap\Strategies\WatermarkStrategy;
-use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\Image;
-use Intervention\Image\ImageManager;
 
 class ImageSnap
 {
@@ -19,9 +17,9 @@ class ImageSnap
         'watermark' => WatermarkStrategy::class,
     ];
 
-    public static function snap($image, array $mediaOptions)
+    public static function snap($fileImage, array $mediaOptions)
     {
-        $image = self::convertImageInstance($image);
+        $image = self::convertImageInstance($fileImage);
 
         foreach ($mediaOptions as $option) {
             $type = $option['type'];
@@ -35,10 +33,6 @@ class ImageSnap
             }
         }
 
-        if (($image instanceof Image)) {
-            return $image->encode();
-        }
-
         return $image;
     }
 
@@ -47,8 +41,7 @@ class ImageSnap
         if ($image instanceof Image) {
             return $image;
         }
-
-        $manager = new ImageManager(Driver::class); // or 'gd'
+        $manager = app('ImageManager');
 
         return $manager->read($image);
     }

@@ -6,6 +6,8 @@ use HydraStorage\HydraStorage\Commands\HydraStorageCommand;
 use HydraStorage\HydraStorage\Contracts\HydraMediaInterface;
 use HydraStorage\HydraStorage\Service\HydraStore;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
+use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\ImageManager;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -46,6 +48,10 @@ class HydraStorageServiceProvider extends PackageServiceProvider
 
         $this->app->singleton(MediaOption::class, function () {
             return MediaOption::create();
+        });
+
+        $this->app->singleton('ImageManager', function () {
+            return new ImageManager(new Driver());
         });
     }
 }

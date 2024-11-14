@@ -38,10 +38,7 @@ class ImageManipulation
             return $output;
         }
 
-        $manager = new ImageManager(Driver::class);
-        $image = $manager->read($file);
-
-        return ImageSnap::snap($image, self::$mediaOption->type);
+        return ImageSnap::snap($file, self::$mediaOption->type);
     }
 
     protected function checkExtension($file): void

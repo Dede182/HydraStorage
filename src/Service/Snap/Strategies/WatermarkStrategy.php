@@ -7,7 +7,7 @@ use Intervention\Image\Image;
 
 class WatermarkStrategy implements ImageOperationStrategy
 {
-    public function apply(Image $image, $value): Image
+    public function apply(Image $image,mixed $value): Image
     {
         try {
             return $image->place($value['image'], $value['position'], opacity: $value['opacity']);

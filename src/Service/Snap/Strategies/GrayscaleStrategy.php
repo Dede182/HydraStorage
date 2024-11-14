@@ -7,7 +7,7 @@ use Intervention\Image\Image;
 
 class GrayscaleStrategy implements ImageOperationStrategy
 {
-    public function apply(Image $image, $value): Image
+    public function apply(Image $image,mixed $value): Image
     {
         return $image->greyscale();
     }

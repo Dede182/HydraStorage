@@ -28,7 +28,7 @@ class FileNamGenerator implements FileNameGeneratorInterface
                 $file_name = $value['value'].'_'.$file_name;
             }
         }
-
-        return $file_name.'.'.$extension;
+        $uid = uniqid();
+        return "{$file_name}_{$uid}.{$extension}";
     }
 }

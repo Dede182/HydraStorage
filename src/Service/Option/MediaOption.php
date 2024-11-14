@@ -11,17 +11,17 @@ class MediaOption
 
     public function __construct() {}
 
-    public static function create()
+    public static function create(): MediaOption
     {
         return new self;
     }
 
-    public function get()
+    public function get(): static
     {
         return $this;
     }
 
-    public function setExtension(string $extension)
+    public function setExtension(string $extension): static
     {
         $this->type[] = [
             'type' => 'extension',
@@ -31,7 +31,7 @@ class MediaOption
         return $this;
     }
 
-    public function setQuality(int $quality)
+    public function setQuality(int $quality): static
     {
         $this->type[] = [
             'type' => 'compress',
@@ -41,7 +41,7 @@ class MediaOption
         return $this;
     }
 
-    public function grayscale()
+    public function grayscale(): static
     {
         $this->type[] = [
             'type' => 'grayscale',
@@ -51,7 +51,7 @@ class MediaOption
         return $this;
     }
 
-    public function setWaterMark(mixed $image, $position = 'center', $opacity = 100)
+    public function setWaterMark(mixed $image,string $position = 'center',int $opacity = 100)
     {
 
         $this->type[] = [
@@ -66,7 +66,7 @@ class MediaOption
         return $this;
     }
 
-    public function setPrefixFileName(string $prefix)
+    public function setPrefixFileName(string $prefix): static
     {
         $this->type[] = [
             'type' => 'prefix',
@@ -76,7 +76,7 @@ class MediaOption
         return $this;
     }
 
-    public function resize(?string $recommand, ?int $width = 350, ?int $height = 350)
+    public function resize(?string $recommand, ?int $width = 350, ?int $height = 350): static
     {
         match ($recommand) {
             'thumbnail' => [$width, $height] = [150, 150],
