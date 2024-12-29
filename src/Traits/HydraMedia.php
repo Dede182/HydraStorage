@@ -42,4 +42,14 @@ trait HydraMedia
             ? asset('storage/'.$path)
             : Storage::disk($disk)->url($folder.'/'.$path);
     }
+
+    public function dropDirectory(string $path): bool
+    {
+        if(Storage::disk(config('hydrastorage.provider'))->exists($path))
+        {
+            Storage::disk(config('hydrastorage.provider'))->deleteDirectory($path);
+            return true;
+        }
+        return false;
+    }
 }
