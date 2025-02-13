@@ -39,7 +39,7 @@ trait HydraMedia
 
         // Return the correct URL based on the disk
         return $disk === 'local'
-            ? asset('storage/'.$path)
+            ? url(asset('storage/'."$folder/$path"))
             : Storage::disk($disk)->url($folder.'/'.$path);
     }
 
