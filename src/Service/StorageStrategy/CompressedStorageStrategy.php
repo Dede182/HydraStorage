@@ -23,6 +23,10 @@ class CompressedStorageStrategy implements StorageStrategy
         $disk = config('hydrastorage.provider');
         $compressedFile = ImageManipulation::manipulate($file, $this->mediaOption);
 
+        if($compressedFile instanceof \Intervention\Image\Image){
+            $compressedFile = $compressedFile->encode();
+        }
+
         Storage::disk($disk)->put($folderPath.'/'.$fileName, $compressedFile);
 
         return $fileName;

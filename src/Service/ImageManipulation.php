@@ -45,9 +45,13 @@ class ImageManipulation
     {
         $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif','application/octet-stream'];
 
-        $extension = $file->getClientMimeType();
-
-        $name = $file->getClientOriginalName();
+        if(is_string($file)){
+            $extension = $file;
+            $name = 'file';
+        } else {
+            $extension = $file->getClientMimeType();
+            $name = $file->getClientOriginalName();
+        }
 
         $message = "$name is  $extension of mimeType, only jpeg, png, jpg, gif are allowed.";
 
