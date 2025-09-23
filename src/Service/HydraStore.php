@@ -65,7 +65,7 @@ class HydraStore implements HydraMediaInterface
     {
         $storagePath = $this->mainPath.$folderPath;
         if (! Storage::exists($storagePath)) {
-            Storage::makeDirectory($storagePath, 0755, true);
+            Storage::makeDirectory($storagePath, 0775, true);
         }
     }
 
