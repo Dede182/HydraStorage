@@ -37,10 +37,12 @@ trait HydraMedia
             return $path;
         }
 
+        $publicPrefix = config('hydrastorage.public_prefix') ? 'public/' : '';
+
         // Return the correct URL based on the disk
         return $disk === 'local'
             ? url(asset('storage/'."$folder/$path"))
-            : Storage::disk($disk)->url($folder.'/'.$path);
+            : Storage::disk($disk)->url($publicPrefix.$folder.'/'.$path);
     }
 
     public function dropDirectory(string $path): bool
