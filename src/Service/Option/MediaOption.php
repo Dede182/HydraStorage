@@ -97,6 +97,11 @@ class MediaOption
         return $this;
     }
 
+    public function isCompressed() : bool
+    {
+        return count(array_filter($this->type, fn($option) => $option['type'] === 'compress')) > 0;
+    }
+
     public function orderOperations(): array
     {
         $lastOperationType = 'compress';

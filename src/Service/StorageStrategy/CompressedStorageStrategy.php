@@ -6,6 +6,8 @@ use HydraStorage\HydraStorage\Contracts\StorageStrategy;
 use HydraStorage\HydraStorage\Service\ImageManipulation;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Imagick\Encoders\WebpEncoder;
+use Intervention\Image\Encoders\AutoEncoder;
 
 class CompressedStorageStrategy implements StorageStrategy
 {
@@ -21,11 +23,14 @@ class CompressedStorageStrategy implements StorageStrategy
     public function store(mixed $file, string $folderPath, string $fileName): string
     {
         $disk = config('hydrastorage.provider');
+
         $compressedFile = ImageManipulation::manipulate($file, $this->mediaOption);
 
-        if($compressedFile instanceof \Intervention\Image\Image){
-            $compressedFile = $compressedFile->encode();
+        if($compressedFile instanceof \Intervention\Image\Image && !$this->mediaOption->isCompressed()){
+            $quality = config('hydrastorage.compressed_quality');
+            $compressedFile = $compressedFile->encode(new WebpEncoder($quality));
         }
+
 
         Storage::disk($disk)->put($folderPath.'/'.$fileName, $compressedFile);
 
