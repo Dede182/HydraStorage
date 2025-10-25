@@ -50,8 +50,7 @@ test('can save multi file with original format', function () {
 test('can save with custom format with single file', function () {
     $fakeFile = UploadedFile::fake()->image('test.jpg');
 
-    $options = (new MediaOption('import', 20, 400, 400, 'png'));
-    $mediaOptions = $options->get();
+    $options = (new MediaOption())->resize('custom','300','200')->get();
 
     $media = $this->storeMedia($fakeFile, 'sub_storage_3', true, $options);
 
@@ -59,8 +58,8 @@ test('can save with custom format with single file', function () {
 
     $image = getimagesize($path);
 
-    $this->assertEquals($mediaOptions->width, $image[0]);
-    $this->assertEquals($mediaOptions->height, $image[1]);
+    $this->assertEquals(300, $image[0]);
+    $this->assertEquals(200, $image[1]);
 
     $this->assertFileExists($path);
 });
@@ -69,7 +68,7 @@ test('InvalidInputMediaFormat exception format return', function () {
 
     $fakeFile = UploadedFile::fake()->create('test.pdf', 100);
 
-    $options = (new MediaOption('import', 20, 400, 400, 'pdf'));
+    $options = (new MediaOption())->setQuality(50)->get();
 
     $this->expectException(InvalidInputMediaFormat::class);
     $media = $this->storeMedia($fakeFile, 'sub_storage_4', true, $options);
@@ -77,9 +76,9 @@ test('InvalidInputMediaFormat exception format return', function () {
 });
 
 test('stored file size is less than original by reducing quality', function () {
-    $fakeFile = UploadedFile::fake()->image('test.jpg')->size(6000000);
+    $fakeFile = UploadedFile::fake()->image('test.jpg')->size(60000000);
 
-    $options = (new MediaOption('import', 80, 400, 400, 'jpg'));
+    $options = (new MediaOption())->setQuality(60)->get();
 
     $media = $this->storeMedia($fakeFile, 'sub_storage_5', true, $options);
 
@@ -88,7 +87,8 @@ test('stored file size is less than original by reducing quality', function () {
     $originalSize = filesize($fakeFile);
     $storedSize = filesize($path);
 
-    $this->assertLessThan($storedSize, $originalSize);
+
+    $this->assertLessThan($originalSize, $storedSize);
 
     $this->assertFileExists($path);
 });
