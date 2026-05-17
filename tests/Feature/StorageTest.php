@@ -50,7 +50,7 @@ test('can save multi file with original format', function () {
 test('can save with custom format with single file', function () {
     $fakeFile = UploadedFile::fake()->image('test.jpg');
 
-    $options = (new MediaOption())->resize('custom','300','200')->get();
+    $options = (new MediaOption)->resize('custom', '300', '200')->get();
 
     $media = $this->storeMedia($fakeFile, 'sub_storage_3', true, $options);
 
@@ -68,17 +68,48 @@ test('InvalidInputMediaFormat exception format return', function () {
 
     $fakeFile = UploadedFile::fake()->create('test.pdf', 100);
 
-    $options = (new MediaOption())->setQuality(50)->get();
+    $options = (new MediaOption)->setQuality(50)->get();
 
     $this->expectException(InvalidInputMediaFormat::class);
     $media = $this->storeMedia($fakeFile, 'sub_storage_4', true, $options);
 
 });
 
+test('can save as webp when enabled via config', function () {
+    config(['hydrastorage.save_as_webp' => true]);
+
+    $fakeFile = UploadedFile::fake()->image('test.jpg');
+
+    $media = $this->storeMedia($fakeFile, 'sub_storage_webp_config', true, new MediaOption);
+
+    expect($media)->toEndWith('.webp');
+
+    $path = storage_path('app/public/sub_storage_webp_config/'.$media);
+
+    expect(file_exists($path))->toBeTrue();
+    expect(mime_content_type($path))->toBe('image/webp');
+});
+
+test('can save as webp when enabled via media option', function () {
+    config(['hydrastorage.save_as_webp' => false]);
+
+    $fakeFile = UploadedFile::fake()->image('test.jpg');
+
+    $option = (new MediaOption)->webp();
+
+    $media = $this->storeMedia($fakeFile, 'sub_storage_webp_option', true, $option);
+
+    expect($media)->toEndWith('.webp');
+
+    $path = storage_path('app/public/sub_storage_webp_option/'.$media);
+
+    expect(mime_content_type($path))->toBe('image/webp');
+});
+
 test('stored file size is less than original by reducing quality', function () {
     $fakeFile = UploadedFile::fake()->image('test.jpg')->size(60000000);
 
-    $options = (new MediaOption())->setQuality(60)->get();
+    $options = (new MediaOption)->setQuality(60)->get();
 
     $media = $this->storeMedia($fakeFile, 'sub_storage_5', true, $options);
 
@@ -86,7 +117,6 @@ test('stored file size is less than original by reducing quality', function () {
 
     $originalSize = filesize($fakeFile);
     $storedSize = filesize($path);
-
 
     $this->assertLessThan($originalSize, $storedSize);
 

@@ -51,7 +51,7 @@ class MediaOption
         return $this;
     }
 
-    public function setWaterMark(mixed $image,string $position = 'center',int $opacity = 100)
+    public function setWaterMark(mixed $image, string $position = 'center', int $opacity = 100)
     {
 
         $this->type[] = [
@@ -97,19 +97,57 @@ class MediaOption
         return $this;
     }
 
-    public function isCompressed() : bool
+    public function webp(?bool $enabled = true): static
     {
-        return count(array_filter($this->type, fn($option) => $option['type'] === 'compress')) > 0;
+        $this->type[] = [
+            'type' => 'webp',
+            'value' => $enabled,
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Optimize for lightweight storage: WebP at configured quality (default 60).
+     * Combine with resize() for maximum savings on large uploads.
+     */
+    public function lightweight(?int $quality = null): static
+    {
+        return $this->setQuality(
+            $quality ?? (int) (config('hydrastorage.webp_quality') ?? config('hydrastorage.compressed_quality', 60))
+        );
+    }
+
+    public function wantsWebpOutput(): bool
+    {
+        $webpOptions = array_filter($this->type, fn ($option) => $option['type'] === 'webp');
+
+        if (count($webpOptions) > 0) {
+            return (bool) end($webpOptions)['value'];
+        }
+
+        return (bool) config('hydrastorage.save_as_webp', false);
+    }
+
+    public function isCompressed(): bool
+    {
+        return count(array_filter($this->type, fn ($option) => $option['type'] === 'compress')) > 0;
+    }
+
+    public function shouldUseWebpExtension(): bool
+    {
+        return $this->isCompressed() || $this->wantsWebpOutput();
     }
 
     public function orderOperations(): array
     {
         $lastOperationType = 'compress';
 
-        $lastOperations = array_filter($this->type, fn($option) => $option['type'] === $lastOperationType);
-        $otherOperations = array_filter($this->type, fn($option) => $option['type'] !== $lastOperationType);
+        $lastOperations = array_filter($this->type, fn ($option) => $option['type'] === $lastOperationType);
+        $otherOperations = array_filter($this->type, fn ($option) => $option['type'] !== $lastOperationType);
 
         $this->type = array_merge($otherOperations, $lastOperations);
+
         return $this->type;
     }
 }

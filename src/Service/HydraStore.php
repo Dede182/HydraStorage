@@ -25,6 +25,7 @@ class HydraStore implements HydraMediaInterface
     public function setProvider(?string $provider): self
     {
         config(['hydrastorage.provider' => $provider ?? config('hydrastorage.provider')]);
+
         return $this;
     }
 
@@ -55,7 +56,7 @@ class HydraStore implements HydraMediaInterface
 
     protected function storeSingleMedia(mixed $file, string $folderPath): string
     {
-        $extension = ExtensionCracker::getExtension($file);
+        $extension = $this->resolveStoredExtension($file);
         $fileName = FileNamGenerator::generate($file, $extension, $this->mediaOption);
 
         return $this->storageStrategy->store($file, $this->mainPath.$folderPath, $fileName);
@@ -76,5 +77,16 @@ class HydraStore implements HydraMediaInterface
         }
 
         return new RegularStorageStrategy;
+    }
+
+    protected function resolveStoredExtension(mixed $file): string
+    {
+        $extension = ExtensionCracker::getExtension($file);
+
+        if ($this->mediaOption->shouldUseWebpExtension() && ImageDriverFactory::supportsWebp()) {
+            return 'webp';
+        }
+
+        return $extension;
     }
 }

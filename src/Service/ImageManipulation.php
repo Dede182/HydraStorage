@@ -5,8 +5,6 @@ namespace HydraStorage\HydraStorage\Service;
 use HydraStorage\HydraStorage\Expections\InvalidInputMediaFormat;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
 use HydraStorage\HydraStorage\Service\Snap\ImageSnap;
-use Intervention\Image\Drivers\Imagick\Driver;
-use Intervention\Image\ImageManager;
 
 class ImageManipulation
 {
@@ -43,9 +41,9 @@ class ImageManipulation
 
     protected function checkExtension($file): void
     {
-        $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif','application/octet-stream'];
+        $accept = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp', 'application/octet-stream'];
 
-        if(is_string($file)){
+        if (is_string($file)) {
             $extension = $file;
             $name = 'file';
         } else {
@@ -53,7 +51,7 @@ class ImageManipulation
             $name = $file->getClientOriginalName();
         }
 
-        $message = "$name is  $extension of mimeType, only jpeg, png, jpg, gif are allowed.";
+        $message = "$name is  $extension of mimeType, only jpeg, png, jpg, gif, and webp are allowed.";
 
         if (! in_array($extension, $accept)) {
             throw new InvalidInputMediaFormat($message);

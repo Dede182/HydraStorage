@@ -5,8 +5,8 @@ namespace HydraStorage\HydraStorage;
 use HydraStorage\HydraStorage\Commands\HydraStorageCommand;
 use HydraStorage\HydraStorage\Contracts\HydraMediaInterface;
 use HydraStorage\HydraStorage\Service\HydraStore;
+use HydraStorage\HydraStorage\Service\ImageDriverFactory;
 use HydraStorage\HydraStorage\Service\Option\MediaOption;
-use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -25,10 +25,6 @@ class HydraStorageServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigration('create_hydrastorage_table')
             ->hasCommand(HydraStorageCommand::class);
-
-        if (! extension_loaded('imagick')) {
-            throw new \Exception('Imagick extension is not loaded');
-        }
     }
 
     public function boot(): void
@@ -51,7 +47,7 @@ class HydraStorageServiceProvider extends PackageServiceProvider
         });
 
         $this->app->singleton('ImageManager', function () {
-            return new ImageManager(new Driver());
+            return new ImageManager(ImageDriverFactory::make());
         });
     }
 }
